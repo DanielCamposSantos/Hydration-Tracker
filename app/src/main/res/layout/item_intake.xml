@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="48dp"
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/water"
+        android:src="@drawable/ic_water_drop_24"
+        app:tint="#0061A4" />
+
+    <TextView
+        android:id="@+id/textIntakeTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#404752"
+        android:textSize="14sp"
+        tools:text="14:32" />
+
+    <TextView
+        android:id="@+id/textIntakeVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#161C24"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="+250 ml" />
+
+</LinearLayout>

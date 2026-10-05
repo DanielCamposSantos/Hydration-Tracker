@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Controle de Hidratação</string>
+
+    <!-- Tela principal -->
+    <string name="hydration_tracker">Controle de Hidratação</string>
+    <string name="log_intake">REGISTRAR CONSUMO</string>
+    <string name="add_intake">Adicionar Consumo</string>
+    <string name="volume_in_milliliters">Volume em mililitros</string>
+    <string name="last_record">Último registro</string>
+    <string name="total_intake">Consumo total</string>
+    <string name="daily_goal">Meta diária</string>
+    <string name="todays_log">REGISTROS DE HOJE</string>
+    <string name="no_records_yet">Nenhum registro ainda</string>
+
+    <!-- Navegação -->
+    <string name="water">Água</string>
+    <string name="settings">Configurações</string>
+
+    <!-- Acessibilidade -->
+    <string name="warning">Aviso</string>
+
+    <!-- Placeholder temporário do componente customizado -->
+    <string name="water_progress_placeholder">WaterProgressView\nPlaceholder</string>
+
+
+
+    <!-- Formatos dinâmicos -->
+    <string name="goal_format">Meta: %1$d ml</string>
+    <string name="goal_exceeded_format">Meta diária excedida (+%1$d ml)</string>
+
+    <plurals name="log_count">
+        <item quantity="one">%1$d registro</item>
+        <item quantity="many">%1$d registros</item>
+        <item quantity="other">%1$d registros</item>
+    </plurals>
+
+    <string name="daily_goal_description">Defina sua meta diária de hidratação para manter hábitos saudáveis</string>
+    <string name="save">Salvar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="goal_saved_successfully">Meta salva com sucesso!</string>
+
+</resources>

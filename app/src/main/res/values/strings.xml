@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Hydration Tracker</string>
+
+    <!-- Main screen -->
+    <string name="hydration_tracker">Hydration Tracker</string>
+    <string name="log_intake">LOG INTAKE</string>
+    <string name="add_intake">Add Intake</string>
+    <string name="volume_in_milliliters">Volume in milliliters</string>
+    <string name="last_record">Last record</string>
+    <string name="total_intake">Total intake</string>
+    <string name="daily_goal">Daily goal</string>
+    <string name="todays_log">TODAY\'S LOG</string>
+    <string name="no_records_yet">No records yet</string>
+
+    <!-- Navigation -->
+    <string name="water">Water</string>
+    <string name="settings">Settings</string>
+
+    <!-- Accessibility -->
+    <string name="warning">Warning</string>
+
+    <!-- Temporary custom component placeholder -->
+    <string name="water_progress_placeholder">WaterProgressView\nPlaceholder</string>
+
+    <!-- Quick intake -->
+    <string name="intake_150" translatable="false">+150 ml</string>
+    <string name="intake_250" translatable="false">+250 ml</string>
+    <string name="intake_350" translatable="false">+350 ml</string>
+    <string name="intake_500" translatable="false">+500 ml</string>
+
+    <string name="volume_hint" translatable="false">0</string>
+
+    <!-- Dynamic formats -->
+    <string name="goal_format">Goal: %1$d ml</string>
+    <string name="goal_exceeded_format">Daily goal exceeded (+%1$d ml)</string>
+    <string name="volume_format" translatable="false">%1$d ml</string>
+    <string name="added_volume_format" translatable="false">+%1$d ml</string>
+
+    <plurals name="log_count">
+        <item quantity="one">%1$d entry</item>
+        <item quantity="other">%1$d entries</item>
+    </plurals>
+
+    <string name="daily_goal_description">Set your daily hydration goal to keep your healthy habits</string>
+    <string name="milliliters_short" translatable="false">ml</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="goal_saved_successfully">Goal saved successfully!</string>
+
+</resources>

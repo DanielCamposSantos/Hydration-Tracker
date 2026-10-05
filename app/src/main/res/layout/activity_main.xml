@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FF"
+    tools:context=".MainActivity">
+
+    <!-- Top bar -->
+    <TextView
+        android:id="@+id/titleHydrationTracker"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="#F8F9FF"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="@string/hydration_tracker"
+        android:textColor="#161C24"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Scrollable content -->
+    <ScrollView
+        android:id="@+id/mainScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleHydrationTracker">
+
+        <LinearLayout
+            android:id="@+id/mainContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="24dp">
+
+            <!-- Daily goal -->
+            <LinearLayout
+                android:id="@+id/dailyHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end|center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="4dp"
+                android:paddingBottom="12dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonGoal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:minWidth="0dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="14dp"
+                    android:textAllCaps="false"
+                    android:textColor="#161C24"
+                    android:textSize="12sp"
+                    app:backgroundTint="#E9EEFA"
+                    app:cornerRadius="8dp"
+                    app:icon="@drawable/ic_track_changes_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="6dp"
+                    app:iconSize="18dp"
+                    app:iconTint="#0061A4"
+                    tools:text="Goal: 2000 ml" />
+
+            </LinearLayout>
+
+            <!--
+                WATER PROGRESS PLACEHOLDER
+
+                Replace this FrameLayout with the custom WaterProgressView
+                when the component is ready.
+            -->
+            <FrameLayout
+                android:id="@+id/waterProgressPlaceholder"
+                android:layout_width="match_parent"
+                android:layout_height="330dp"
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFFF"
+                android:elevation="1dp"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/water_progress_placeholder"
+                    android:textAlignment="center"
+                    android:textColor="#707883"
+                    android:textSize="16sp" />
+
+            </FrameLayout>
+
+            <!-- Goal exceeded warning -->
+            <LinearLayout
+                android:id="@+id/goalExceededBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="#FFDCC6"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/iconGoalExceeded"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/warning"
+                    android:src="@drawable/ic_warning_24"
+                    app:tint="#964900" />
+
+                <TextView
+                    android:id="@+id/textGoalExceeded"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#723600"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="Daily goal exceeded (+300 ml)" />
+
+            </LinearLayout>
+
+            <!-- Intake section -->
+            <LinearLayout
+                android:id="@+id/intakeSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFFF"
+                android:elevation="1dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.07"
+                    android:text="@string/log_intake"
+                    android:textColor="#404752"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <!-- Quick intake -->
+                <LinearLayout
+                    android:id="@+id/quickIntakeButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button150"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:minWidth="0dp"
+                        android:padding="0dp"
+                        android:tag="150"
+                        android:text="@string/intake_150"
+                        android:textAllCaps="false"
+                        android:textColor="#161C24"
+                        android:textSize="11sp"
+                        app:backgroundTint="#E9EEFA"
+                        app:cornerRadius="6dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button250"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:minWidth="0dp"
+                        android:padding="0dp"
+                        android:tag="250"
+                        android:text="@string/intake_250"
+                        android:textAllCaps="false"
+                        android:textColor="#161C24"
+                        android:textSize="11sp"
+                        app:backgroundTint="#E9EEFA"
+                        app:cornerRadius="6dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button350"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:minWidth="0dp"
+                        android:padding="0dp"
+                        android:tag="350"
+                        android:text="@string/intake_350"
+                        android:textAllCaps="false"
+                        android:textColor="#161C24"
+                        android:textSize="11sp"
+                        app:backgroundTint="#E9EEFA"
+                        app:cornerRadius="6dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button500"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        android:minWidth="0dp"
+                        android:padding="0dp"
+                        android:tag="500"
+                        android:text="@string/intake_500"
+                        android:textAllCaps="false"
+                        android:textColor="#161C24"
+                        android:textSize="11sp"
+                        app:backgroundTint="#E9EEFA"
+                        app:cornerRadius="6dp" />
+
+                </LinearLayout>
+
+                <!-- Manual intake -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/inputVolume"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:autofillHints=""
+                        android:backgroundTint="#BFC7D4"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:textColor="#161C24"
+                        android:textColorHint="#707883"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonAddIntake"
+                        android:layout_width="140dp"
+                        android:layout_height="52dp"
+                        android:text="@string/add_intake"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="#0061A4"
+                        app:cornerRadius="6dp"
+                        app:icon="@drawable/ic_add_24"
+                        app:iconGravity="textStart"
+                        app:iconPadding="5dp"
+                        app:iconSize="20dp"
+                        app:iconTint="#FFFFFF" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/volume_in_milliliters"
+                    android:textColor="#707883"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+            <!-- Summary -->
+            <LinearLayout
+                android:id="@+id/summarySection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="#FFFFFF"
+                android:elevation="1dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <!-- Last record -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/last_record"
+                        android:textColor="#404752"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/textLastRecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="#161C24"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="+250 ml" />
+
+                    <TextView
+                        android:id="@+id/textLastRecordTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#707883"
+                        android:textSize="10sp"
+                        tools:text="14:32" />
+
+                </LinearLayout>
+
+                <!-- Total intake -->
+                <LinearLayout
+                    android:id="@+id/totalSummaryContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#EFF4FF"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_intake"
+                        android:textColor="#0061A4"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/textTotalIntake"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="#0061A4"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:text="1500 ml" />
+
+                </LinearLayout>
+
+                <!-- Daily goal -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/daily_goal"
+                        android:textColor="#404752"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:id="@+id/textDailyGoal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="#161C24"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:text="2000 ml" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Today's log -->
+            <LinearLayout
+                android:id="@+id/historySection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:elevation="1dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Log heading -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:letterSpacing="0.07"
+                        android:text="@string/todays_log"
+                        android:textColor="#404752"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textLogCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#707883"
+                        android:textSize="11sp"
+                        tools:text="5 entries" />
+
+                </LinearLayout>
+
+                <!-- Visible when there are no records -->
+                <TextView
+                    android:id="@+id/textEmptyLog"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:gravity="center"
+                    android:text="@string/no_records_yet"
+                    android:textColor="#707883"
+                    android:textSize="13sp" />
+
+                <!-- Intake rows are inserted here -->
+                <LinearLayout
+                    android:id="@+id/logsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        style="@style/HydrationBottomNavigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#F8F9FF"
+        android:clipToPadding="false"
+        android:elevation="8dp"
+        android:fitsSystemWindows="true"
+        app:itemIconTint="@color/bottom_navigation_color"
+        app:itemTextColor="@color/bottom_navigation_color"
+        app:menu="@menu/bottom_navigation_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

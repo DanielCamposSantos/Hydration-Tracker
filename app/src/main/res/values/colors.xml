@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="primary_normal">#0061A4</color>
+    <color name="primary_exceeded">#C74B00</color>
+
+    <color name="primary_container_normal">#E9EEFA</color>
+    <color name="primary_container_exceeded">#FFE1D2</color>
+
+    <color name="navigation_inactive">#707883</color>
+    <color name="summary_container_normal">#EFF4FF</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
+</resources>

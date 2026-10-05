@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style
+        name="HydrationBottomNavigation"
+        parent="Widget.MaterialComponents.BottomNavigationView">
+
+        <item name="android:minHeight">64dp</item>
+
+        <item name="itemIconSize">22dp</item>
+
+        <item name="itemPaddingTop">4dp</item>
+        <item name="itemPaddingBottom">4dp</item>
+
+        <item name="labelVisibilityMode">labeled</item>
+
+        <item name="itemHorizontalTranslationEnabled">false</item>
+
+        <item name="itemActiveIndicatorStyle">@null</item>
+
+        <item name="itemBackground">@android:color/transparent</item>
+        <item name="itemRippleColor">@android:color/transparent</item>
+
+        <item name="itemTextAppearanceActive">
+            @style/HydrationBottomNavigationLabel
+        </item>
+
+        <item name="itemTextAppearanceInactive">
+            @style/HydrationBottomNavigationLabel
+        </item>
+
+    </style>
+
+    <style
+        name="HydrationBottomNavigationLabel"
+        parent="TextAppearance.MaterialComponents.Caption">
+
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.05</item>
+
+    </style>
+    <style name="Widget.Theme.HydrationTracker.MyView" parent="">
+        <item name="android:background">@color/gray_400</item>
+        <item name="exampleColor">@color/light_blue_400</item>
+    </style>
+
+</resources>

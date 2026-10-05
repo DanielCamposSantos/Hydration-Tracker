@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/navWater"
+            android:checked="true"
+            android:icon="@drawable/ic_water_drop_24"
+            android:title="@string/water" />
+
+        <item
+            android:id="@+id/navSettings"
+            android:icon="@drawable/ic_settings_24"
+            android:title="@string/settings" />
+
+    </group>
+
+</menu>
