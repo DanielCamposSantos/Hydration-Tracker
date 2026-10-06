@@ -40,5 +40,7 @@
     <string name="save">Salvar</string>
     <string name="cancel">Cancelar</string>
     <string name="goal_saved_successfully">Meta salva com sucesso!</string>
+    <string name="validation_message">Digite um volume válido</string>
+    <string name="success_message">Consumo registrado com sucesso</string>
 
 </resources>

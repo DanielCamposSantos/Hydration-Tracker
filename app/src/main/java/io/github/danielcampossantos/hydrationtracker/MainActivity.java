@@ -1,5 +1,7 @@
 package io.github.danielcampossantos.hydrationtracker;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -11,9 +13,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputVolume;
     private LinearLayout logsContainer;
     private LinearLayout totalSummaryContainer;
+    private HydrationView hydrationView;
 
     private TextView textEmptyLog;
     private MaterialButton goalButton;
@@ -122,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDailyCleaner() {
-        //TODO: Erro na atualção de datas
         String today = getToday();
         String lastAccessDay = sharedPreferences.getString("last_access_day", today);
 
@@ -140,10 +142,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resetDailyData() {
-        // TODO: corrigir
         sharedPreferences.edit()
                 .remove(INTAKE_LOGS)
                 .apply();
+
+        intakeLogs.clear();
+        totalIntake = 0;
     }
 
     private void createSharedPreference() {
@@ -164,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         textDailyGoal = findViewById(R.id.textDailyGoal);
         totalSummaryContainer = findViewById(R.id.totalSummaryContainer);
         goalButton = findViewById(R.id.buttonGoal);
+        hydrationView = findViewById(R.id.hydrationView);
     }
 
     private void findAddingIntakeViews() {
@@ -186,6 +191,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateAllFields() {
         updateLogs();
+    }
+
+    private void updateHydrationView() {
+        float progress = goal > 0 ? (float) totalIntake / goal : 0f;
+        int percentage = goal > 0 ? Math.round((float) totalIntake / goal * 100) : 0;
+        int exceededPercentage = Math.max(percentage - 100, 0);
+
+        int primaryColor = ContextCompat.getColor(this, R.color.primary_normal);
+        int containerColor = ContextCompat.getColor(this, R.color.primary_container_normal);
+        int exceededColor = ContextCompat.getColor(this, R.color.primary_exceeded);
+
+        hydrationView.setProgress(progress);
+        hydrationView.setPercentage(percentage);
+        hydrationView.setExceededPercentage(exceededPercentage);
+        hydrationView.setPrimaryColor(primaryColor);
+        hydrationView.setContainerColor(containerColor);
+        hydrationView.setExceededColor(exceededColor);
     }
 
 
@@ -226,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
         updateTextColors(primaryColor, containerColor, summaryContainerColor);
         updateLogColors(primaryColor);
         updateMenuColors(primaryColor);
-
+        updateHydrationView();
 
     }
 
@@ -245,20 +267,15 @@ public class MainActivity extends AppCompatActivity {
 
         totalSummaryContainer.setBackgroundTintList(ColorStateList.valueOf(summaryContainerColor));
 
-        updateTextViewsColor(totalSummaryContainer, primaryColor);
+        updateTextViewsColor(primaryColor);
     }
 
-    private void updateTextViewsColor(View view, int primaryColor) {
-        //TODO: simplificar
-        if (view instanceof TextView) {
-            ((TextView) view).setTextColor(primaryColor);
-        }
+    private void updateTextViewsColor(int primaryColor) {
+        for (int i = 0; i < totalSummaryContainer.getChildCount(); i++) {
+            View view = totalSummaryContainer.getChildAt(i);
 
-        if (view instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) view;
-
-            for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                updateTextViewsColor(viewGroup.getChildAt(i), primaryColor);
+            if (view instanceof TextView) {
+                ((TextView) view).setTextColor(primaryColor);
             }
         }
     }
@@ -311,9 +328,10 @@ public class MainActivity extends AppCompatActivity {
         String volumeText = getVolumeText();
 
         if (isInvalidVolume(volumeText)) {
-            // TODO: Colocar um Toat indicando o erro
+            displayToastWithMessage(getString(R.string.validation_message));
             return;
         }
+        displayToastWithMessage(getString(R.string.success_message));
 
         int volume = parseVolume(volumeText);
 
@@ -322,13 +340,16 @@ public class MainActivity extends AppCompatActivity {
         loadLogs();
     }
 
+    private void displayToastWithMessage(String message) {
+        Toast.makeText(this, message, LENGTH_SHORT).show();
+    }
+
     private String getVolumeText() {
         return inputVolume.getText().toString().trim();
     }
 
     private boolean isInvalidVolume(String volumeText) {
-        // TODO: Corrigir erro de 0 ser válido
-        return volumeText.isEmpty();
+        return volumeText.isEmpty() || parseVolume(volumeText) <= 0;
     }
 
     private int parseVolume(String volumeText) {
