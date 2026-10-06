@@ -1,5 +1,7 @@
 package io.github.danielcampossantos.hydrationtracker;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -14,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -35,8 +36,6 @@ import java.util.Locale;
 
 import io.github.danielcampossantos.hydrationtracker.model.Intake;
 
-import static android.widget.Toast.LENGTH_SHORT;
-
 public class MainActivity extends AppCompatActivity {
 
     public static final String INTAKE_LOGS = "intake_logs";
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputVolume;
     private LinearLayout logsContainer;
     private LinearLayout totalSummaryContainer;
+    private HydrationView hydrationView;
 
     private TextView textEmptyLog;
     private MaterialButton goalButton;
@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         textDailyGoal = findViewById(R.id.textDailyGoal);
         totalSummaryContainer = findViewById(R.id.totalSummaryContainer);
         goalButton = findViewById(R.id.buttonGoal);
+        hydrationView = findViewById(R.id.hydrationView);
     }
 
     private void findAddingIntakeViews() {
@@ -190,6 +191,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateAllFields() {
         updateLogs();
+    }
+
+    private void updateHydrationView() {
+        float progress = goal > 0 ? (float) totalIntake / goal : 0f;
+        int percentage = goal > 0 ? Math.round((float) totalIntake / goal * 100) : 0;
+        int exceededPercentage = Math.max(percentage - 100, 0);
+
+        int primaryColor = ContextCompat.getColor(this, R.color.primary_normal);
+        int containerColor = ContextCompat.getColor(this, R.color.primary_container_normal);
+        int exceededColor = ContextCompat.getColor(this, R.color.primary_exceeded);
+
+        hydrationView.setProgress(progress);
+        hydrationView.setPercentage(percentage);
+        hydrationView.setExceededPercentage(exceededPercentage);
+        hydrationView.setPrimaryColor(primaryColor);
+        hydrationView.setContainerColor(containerColor);
+        hydrationView.setExceededColor(exceededColor);
     }
 
 
@@ -230,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
         updateTextColors(primaryColor, containerColor, summaryContainerColor);
         updateLogColors(primaryColor);
         updateMenuColors(primaryColor);
-
+        updateHydrationView();
 
     }
 

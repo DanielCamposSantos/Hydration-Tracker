@@ -81,31 +81,13 @@
 
             </LinearLayout>
 
-            <!--
-                WATER PROGRESS PLACEHOLDER
-
-                Replace this FrameLayout with the custom WaterProgressView
-                when the component is ready.
-            -->
-            <FrameLayout
-                android:id="@+id/waterProgressPlaceholder"
-                android:layout_width="match_parent"
-                android:layout_height="330dp"
-                android:layout_marginBottom="16dp"
-                android:background="#FFFFFF"
-                android:elevation="1dp"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/water_progress_placeholder"
-                    android:textAlignment="center"
-                    android:textColor="#707883"
-                    android:textSize="16sp" />
-
-            </FrameLayout>
+            <io.github.danielcampossantos.hydrationtracker.HydrationView
+                android:id="@+id/hydrationView"
+                android:layout_width="180dp"
+                android:layout_height="220dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="20dp" />
 
             <!-- Goal exceeded warning -->
             <LinearLayout
