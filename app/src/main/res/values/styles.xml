@@ -42,7 +42,6 @@
     </style>
     <style name="Widget.Theme.HydrationTracker.MyView" parent="">
         <item name="android:background">@color/gray_400</item>
-        <item name="exampleColor">@color/light_blue_400</item>
     </style>
 
 </resources>

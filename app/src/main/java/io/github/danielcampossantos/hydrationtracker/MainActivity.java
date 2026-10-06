@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
         findAllViews();
 
-
         setQuickButtonsClickListeners(button150, button250, button350, button500);
 
 
@@ -123,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDailyCleaner() {
+        //TODO: Erro na atualção de datas
         String today = getToday();
         String lastAccessDay = sharedPreferences.getString("last_access_day", today);
 
@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resetDailyData() {
+        // TODO: corrigir
         sharedPreferences.edit()
                 .remove(INTAKE_LOGS)
                 .apply();
@@ -248,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateTextViewsColor(View view, int primaryColor) {
+        //TODO: simplificar
         if (view instanceof TextView) {
             ((TextView) view).setTextColor(primaryColor);
         }
@@ -290,10 +292,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateMenuColors(int primaryColor) {
-        int inactiveColor = ContextCompat.getColor(
-                this,
-                R.color.navigation_inactive
-        );
+        int inactiveColor = ContextCompat.getColor(this, R.color.navigation_inactive);
 
         int[][] states = new int[][]{
                 new int[]{android.R.attr.state_checked},
@@ -312,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
         String volumeText = getVolumeText();
 
         if (isInvalidVolume(volumeText)) {
+            // TODO: Colocar um Toat indicando o erro
             return;
         }
 
@@ -327,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isInvalidVolume(String volumeText) {
+        // TODO: Corrigir erro de 0 ser válido
         return volumeText.isEmpty();
     }
 
@@ -420,7 +421,6 @@ public class MainActivity extends AppCompatActivity {
         return intakeLogs.get(intakeLogs.size() - 1);
     }
 
-    @NonNull
     private String formatDateToValidString(Intake intake) {
         return timeFormatter.format(new Date(intake.getTimestamp()));
     }
