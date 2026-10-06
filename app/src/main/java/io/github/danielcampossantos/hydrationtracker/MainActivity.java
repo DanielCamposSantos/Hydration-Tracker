@@ -35,6 +35,8 @@ import java.util.Locale;
 
 import io.github.danielcampossantos.hydrationtracker.model.Intake;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String INTAKE_LOGS = "intake_logs";
@@ -308,9 +310,10 @@ public class MainActivity extends AppCompatActivity {
         String volumeText = getVolumeText();
 
         if (isInvalidVolume(volumeText)) {
-            Toast.makeText(this, "Enter a valid volume", Toast.LENGTH_SHORT).show();
+            displayToastWithMessage(getString(R.string.validation_message));
             return;
         }
+        displayToastWithMessage(getString(R.string.success_message));
 
         int volume = parseVolume(volumeText);
 
@@ -319,16 +322,16 @@ public class MainActivity extends AppCompatActivity {
         loadLogs();
     }
 
+    private void displayToastWithMessage(String message) {
+        Toast.makeText(this, message, LENGTH_SHORT).show();
+    }
+
     private String getVolumeText() {
         return inputVolume.getText().toString().trim();
     }
 
     private boolean isInvalidVolume(String volumeText) {
-        if (volumeText.isEmpty()) {
-            return true;
-        }
-
-        return parseVolume(volumeText) <= 0;
+        return volumeText.isEmpty() || parseVolume(volumeText) <= 0;
     }
 
     private int parseVolume(String volumeText) {
