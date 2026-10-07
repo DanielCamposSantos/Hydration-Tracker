@@ -39,15 +39,19 @@ import io.github.danielcampossantos.hydrationtracker.model.Intake;
 public class MainActivity extends AppCompatActivity {
 
     public static final String INTAKE_LOGS = "intake_logs";
-    SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.getDefault());
-    SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private final Gson gson = new Gson();
+    private final SimpleDateFormat timeFormatter =
+            new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+    private final SimpleDateFormat dateFormater =
+            new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     private SharedPreferences sharedPreferences;
-
     private EditText inputVolume;
     private LinearLayout logsContainer;
     private LinearLayout totalSummaryContainer;
-    private HydrationView hydrationView;
+    private WaterProgressView waterProgressView;
+    private LinearLayout goalExceededBanner;
 
     private TextView textEmptyLog;
     private MaterialButton goalButton;
@@ -55,16 +59,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView textLastRecordTime;
     private TextView textTotalIntake;
     private TextView textDailyGoal;
+    private TextView textGoalExceeded;
 
     private Button button150;
     private Button button250;
     private Button button350;
     private Button button500;
     private Button buttonAddIntake;
-
     private BottomNavigationView bottomNavigation;
-
-    private final Gson gson = new Gson();
     private List<Intake> intakeLogs = new ArrayList<>();
     private int totalIntake;
     private int goal;
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setSelectedItemId(R.id.navWater);
     }
 
+
     private void setupBottomNavigation() {
         bottomNavigation.setSelectedItemId(R.id.navWater);
 
@@ -114,15 +117,18 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
 
+
             if (itemId == R.id.navSettings) {
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
             }
 
+
             return false;
         });
     }
+
 
     private void setDailyCleaner() {
         String today = getToday();
@@ -132,27 +138,28 @@ public class MainActivity extends AppCompatActivity {
             resetDailyData();
         }
 
-        sharedPreferences.edit()
-                .putString("last_access_day", today)
-                .apply();
+
+        sharedPreferences.edit().putString("last_access_day", today).apply();
     }
+
 
     private String getToday() {
         return dateFormater.format(new Date());
     }
 
+
     private void resetDailyData() {
-        sharedPreferences.edit()
-                .remove(INTAKE_LOGS)
-                .apply();
+        sharedPreferences.edit().remove(INTAKE_LOGS).apply();
 
         intakeLogs.clear();
         totalIntake = 0;
     }
 
+
     private void createSharedPreference() {
         sharedPreferences = getSharedPreferences("hydration_tracker", MODE_PRIVATE);
     }
+
 
     private void findAllViews() {
         findDataViews();
@@ -161,15 +168,19 @@ public class MainActivity extends AppCompatActivity {
         findBottomNavegationView();
     }
 
+
     private void findDataViews() {
         textLastRecord = findViewById(R.id.textLastRecord);
         textLastRecordTime = findViewById(R.id.textLastRecordTime);
         textTotalIntake = findViewById(R.id.textTotalIntake);
         textDailyGoal = findViewById(R.id.textDailyGoal);
         totalSummaryContainer = findViewById(R.id.totalSummaryContainer);
+        goalExceededBanner = findViewById(R.id.goalExceededBanner);
+        textGoalExceeded = findViewById(R.id.textGoalExceeded);
         goalButton = findViewById(R.id.buttonGoal);
-        hydrationView = findViewById(R.id.hydrationView);
+        waterProgressView = findViewById(R.id.waterProgressView);
     }
+
 
     private void findAddingIntakeViews() {
         button150 = findViewById(R.id.button150);
@@ -180,34 +191,25 @@ public class MainActivity extends AppCompatActivity {
         buttonAddIntake = findViewById(R.id.buttonAddIntake);
     }
 
+
     private void findLogsViews() {
         logsContainer = findViewById(R.id.logsContainer);
         textEmptyLog = findViewById(R.id.textEmptyLog);
     }
 
+
     private void findBottomNavegationView() {
         bottomNavigation = findViewById(R.id.bottomNavigation);
     }
+
 
     private void updateAllFields() {
         updateLogs();
     }
 
-    private void updateHydrationView() {
-        float progress = goal > 0 ? (float) totalIntake / goal : 0f;
-        int percentage = goal > 0 ? Math.round((float) totalIntake / goal * 100) : 0;
-        int exceededPercentage = Math.max(percentage - 100, 0);
 
-        int primaryColor = ContextCompat.getColor(this, R.color.primary_normal);
-        int containerColor = ContextCompat.getColor(this, R.color.primary_container_normal);
-        int exceededColor = ContextCompat.getColor(this, R.color.primary_exceeded);
-
-        hydrationView.setProgress(progress);
-        hydrationView.setPercentage(percentage);
-        hydrationView.setExceededPercentage(exceededPercentage);
-        hydrationView.setPrimaryColor(primaryColor);
-        hydrationView.setContainerColor(containerColor);
-        hydrationView.setExceededColor(exceededColor);
+    private void updateWaterProgressView() {
+        waterProgressView.setHydrationData(totalIntake, goal);
     }
 
 
@@ -222,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
         updateGoalValue();
     }
 
+
     private void updateGoalValue() {
         String goalValue = sharedPreferences.getString("goal", "2000");
         goal = Integer.parseInt(goalValue);
@@ -229,28 +232,42 @@ public class MainActivity extends AppCompatActivity {
         this.goalButton.setText(goalValue);
     }
 
+
+    private void updateGoalExceededWarning() {
+        if (totalIntake > goal) {
+            int exceededAmount = totalIntake - goal;
+            textGoalExceeded.setText(getString(R.string.goal_exceeded_format, exceededAmount));
+            goalExceededBanner.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        goalExceededBanner.setVisibility(View.GONE);
+    }
+
+
     private void updateAllColors(int totalIntake, int goal) {
         boolean exceeded = totalIntake > goal;
 
-        int primaryColor = ContextCompat.getColor(this, exceeded
-                ? R.color.primary_exceeded
+        int primaryColor = ContextCompat.getColor(this, exceeded ?
+                R.color.primary_exceeded
                 : R.color.primary_normal);
 
-        int containerColor = ContextCompat.getColor(this, exceeded
-                ? R.color.primary_container_exceeded
+        int containerColor = ContextCompat.getColor(this, exceeded ?
+                R.color.primary_container_exceeded
                 : R.color.primary_container_normal);
 
-        int summaryContainerColor = ContextCompat.getColor(this, exceeded
-                ? R.color.primary_container_exceeded
+        int summaryContainerColor = ContextCompat.getColor(this, exceeded ?
+                R.color.primary_container_exceeded
                 : R.color.summary_container_normal);
 
         updateInputColors(primaryColor, containerColor);
         updateTextColors(primaryColor, containerColor, summaryContainerColor);
         updateLogColors(primaryColor);
         updateMenuColors(primaryColor);
-        updateHydrationView();
+        updateWaterProgressView();
 
     }
+
 
     private void updateInputColors(int primaryColor, int containerColor) {
         buttonAddIntake.setBackgroundTintList(ColorStateList.valueOf(primaryColor));
@@ -261,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
         button500.setBackgroundTintList(ColorStateList.valueOf(containerColor));
     }
 
+
     private void updateTextColors(int primaryColor, int containerColor, int summaryContainerColor) {
         goalButton.setIconTint(ColorStateList.valueOf(primaryColor));
         goalButton.setBackgroundTintList(ColorStateList.valueOf(containerColor));
@@ -269,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateTextViewsColor(primaryColor);
     }
+
 
     private void updateTextViewsColor(int primaryColor) {
         for (int i = 0; i < totalSummaryContainer.getChildCount(); i++) {
@@ -280,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void updateLogColors(int primaryColor) {
         for (int i = 0; i < logsContainer.getChildCount(); i++) {
             View row = logsContainer.getChildAt(i);
@@ -290,14 +310,17 @@ public class MainActivity extends AppCompatActivity {
                 textVolume.setTextColor(primaryColor);
             }
 
+
             updateLogIcons(row, primaryColor);
         }
     }
+
 
     private void updateLogIcons(View view, int primaryColor) {
         if (view instanceof ImageView) {
             ((ImageView) view).setImageTintList(ColorStateList.valueOf(primaryColor));
         }
+
 
         if (view instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) view;
@@ -308,13 +331,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void updateMenuColors(int primaryColor) {
         int inactiveColor = ContextCompat.getColor(this, R.color.navigation_inactive);
 
-        int[][] states = new int[][]{
-                new int[]{android.R.attr.state_checked},
-                new int[]{-android.R.attr.state_checked}
-        };
+        int[][] states = new int[][]{new int[]{android.R.attr.state_checked},
+                new int[]{-android.R.attr.state_checked}};
 
         int[] colors = new int[]{primaryColor, inactiveColor};
 
@@ -324,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setItemTextColor(navigationColors);
     }
 
+
     private void addIntake() {
         String volumeText = getVolumeText();
 
@@ -331,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
             displayToastWithMessage(getString(R.string.validation_message));
             return;
         }
-        displayToastWithMessage(getString(R.string.success_message));
+
 
         int volume = parseVolume(volumeText);
 
@@ -340,39 +363,45 @@ public class MainActivity extends AppCompatActivity {
         loadLogs();
     }
 
+
     private void displayToastWithMessage(String message) {
         Toast.makeText(this, message, LENGTH_SHORT).show();
     }
+
 
     private String getVolumeText() {
         return inputVolume.getText().toString().trim();
     }
 
+
     private boolean isInvalidVolume(String volumeText) {
         return volumeText.isEmpty() || parseVolume(volumeText) <= 0;
     }
 
+
     private int parseVolume(String volumeText) {
         return Integer.parseInt(volumeText);
     }
+
 
     private void addIntakeToLogs(int volume) {
         Intake intake = new Intake(volume, System.currentTimeMillis());
         intakeLogs.add(intake);
     }
 
+
     private void saveIntakeLogs() {
         String json = gson.toJson(intakeLogs);
 
-        sharedPreferences.edit()
-                .putString(INTAKE_LOGS, json)
-                .apply();
+        sharedPreferences.edit().putString(INTAKE_LOGS, json).apply();
     }
+
 
     private void updateLogs() {
         convertJsonToLogs();
         loadLogs();
     }
+
 
     private void convertJsonToLogs() {
         String logs = sharedPreferences.getString(INTAKE_LOGS, "[]");
@@ -383,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
         intakeLogs = gson.fromJson(logs, listOfMyClassObject);
     }
 
+
     private void loadLogs() {
         logsContainer.removeAllViews();
 
@@ -391,10 +421,12 @@ public class MainActivity extends AppCompatActivity {
 
         updateTotalVolume();
         updateTextValues();
+        updateGoalExceededWarning();
         updateAllColors(totalIntake, goal);
 
 
     }
+
 
     private void useReversedListIntoLogs() {
         for (int i = intakeLogs.size() - 1; i >= 0; i--) {
@@ -409,11 +441,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void updateTotalVolume() {
-        totalIntake = intakeLogs.stream()
-                .map(Intake::getVolume)
-                .reduce(0, Integer::sum);
+        totalIntake = intakeLogs.stream().map(Intake::getVolume).reduce(0, Integer::sum);
     }
+
 
     private void setTextEmptyLogVisibility() {
         if (intakeLogs.isEmpty()) {
@@ -422,25 +454,30 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+
         logsContainer.setVisibility(View.VISIBLE);
         textEmptyLog.setVisibility(View.GONE);
     }
 
-    private void setQuickButtonsClickListeners(Button button150, Button button250, Button button350,
-                                               Button button500) {
+
+    private void setQuickButtonsClickListeners(Button button150, Button button250,
+                                               Button button350, Button button500) {
         button150.setOnClickListener(v -> setVolumeToAdd(150));
         button250.setOnClickListener(v -> setVolumeToAdd(250));
         button350.setOnClickListener(v -> setVolumeToAdd(350));
         button500.setOnClickListener(v -> setVolumeToAdd(500));
     }
 
+
     private void setVolumeToAdd(int volume) {
         inputVolume.setText(String.valueOf(volume));
     }
 
+
     private Intake getLatestIntake() {
         return intakeLogs.get(intakeLogs.size() - 1);
     }
+
 
     private String formatDateToValidString(Intake intake) {
         return timeFormatter.format(new Date(intake.getTimestamp()));

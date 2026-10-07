@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Controle de Hidratação</string>
-
-    <!-- Tela principal -->
+    <string name="app_name">Água Diária</string>
     <string name="hydration_tracker">Controle de Hidratação</string>
     <string name="log_intake">REGISTRAR CONSUMO</string>
     <string name="add_intake">Adicionar Consumo</string>
@@ -14,19 +12,11 @@
     <string name="todays_log">REGISTROS DE HOJE</string>
     <string name="no_records_yet">Nenhum registro ainda</string>
 
-    <!-- Navegação -->
     <string name="water">Água</string>
     <string name="settings">Configurações</string>
 
-    <!-- Acessibilidade -->
     <string name="warning">Aviso</string>
 
-    <!-- Placeholder temporário do componente customizado -->
-    <string name="water_progress_placeholder">WaterProgressView\nPlaceholder</string>
-
-
-
-    <!-- Formatos dinâmicos -->
     <string name="goal_format">Meta: %1$d ml</string>
     <string name="goal_exceeded_format">Meta diária excedida (+%1$d ml)</string>
 
@@ -41,6 +31,6 @@
     <string name="cancel">Cancelar</string>
     <string name="goal_saved_successfully">Meta salva com sucesso!</string>
     <string name="validation_message">Digite um volume válido</string>
-    <string name="success_message">Consumo registrado com sucesso</string>
+    <string name="goal_exceeded_default">Limite diário ultrapassado</string>
 
 </resources>

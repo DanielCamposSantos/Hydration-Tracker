@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="HydrationView">
-        <attr name="color" format="color" />
+
+    <declare-styleable name="WaterProgressView">
+        <attr name="progressColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="exceededTextColor" format="color" />
+        <attr name="containerColor" format="color" />
+        <attr name="maxValue" format="integer" />
+        <attr name="titleText" format="string" />
     </declare-styleable>
+
 </resources>

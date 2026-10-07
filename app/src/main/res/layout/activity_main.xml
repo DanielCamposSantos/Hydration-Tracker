@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -9,7 +8,6 @@
     android:background="#F8F9FF"
     tools:context=".MainActivity">
 
-    <!-- Top bar -->
     <TextView
         android:id="@+id/titleHydrationTracker"
         android:layout_width="0dp"
@@ -27,7 +25,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Scrollable content -->
     <ScrollView
         android:id="@+id/mainScrollView"
         android:layout_width="0dp"
@@ -50,7 +47,6 @@
             android:paddingEnd="20dp"
             android:paddingBottom="24dp">
 
-            <!-- Daily goal -->
             <LinearLayout
                 android:id="@+id/dailyHeader"
                 android:layout_width="match_parent"
@@ -81,20 +77,25 @@
 
             </LinearLayout>
 
-            <io.github.danielcampossantos.hydrationtracker.HydrationView
-                android:id="@+id/hydrationView"
+            <io.github.danielcampossantos.hydrationtracker.WaterProgressView
+                android:id="@+id/waterProgressView"
                 android:layout_width="180dp"
                 android:layout_height="220dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="20dp"
+                app:progressColor="@color/primary_normal"
+                app:textColor="@color/primary_normal"
+                app:exceededTextColor="@color/primary_exceeded"
+                app:containerColor="@color/primary_container_normal"
+                app:maxValue="2000"
+                app:titleText="Consumo diário de água" />
 
-            <!-- Goal exceeded warning -->
             <LinearLayout
                 android:id="@+id/goalExceededBanner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:background="#FFDCC6"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -115,14 +116,14 @@
                     android:id="@+id/textGoalExceeded"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/goal_exceeded_default"
                     android:textColor="#723600"
                     android:textSize="13sp"
                     android:textStyle="bold"
-                    tools:text="Daily goal exceeded (+300 ml)" />
+                    tools:text="Limite diário ultrapassado em 300 ml" />
 
             </LinearLayout>
 
-            <!-- Intake section -->
             <LinearLayout
                 android:id="@+id/intakeSection"
                 android:layout_width="match_parent"
@@ -142,7 +143,6 @@
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
-                <!-- Quick intake -->
                 <LinearLayout
                     android:id="@+id/quickIntakeButtons"
                     android:layout_width="match_parent"
@@ -218,7 +218,6 @@
 
                 </LinearLayout>
 
-                <!-- Manual intake -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -272,7 +271,6 @@
 
             </LinearLayout>
 
-            <!-- Summary -->
             <LinearLayout
                 android:id="@+id/summarySection"
                 android:layout_width="match_parent"
@@ -283,7 +281,6 @@
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <!-- Last record -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -319,7 +316,6 @@
 
                 </LinearLayout>
 
-                <!-- Total intake -->
                 <LinearLayout
                     android:id="@+id/totalSummaryContainer"
                     android:layout_width="0dp"
@@ -349,7 +345,6 @@
 
                 </LinearLayout>
 
-                <!-- Daily goal -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -379,7 +374,6 @@
 
             </LinearLayout>
 
-            <!-- Today's log -->
             <LinearLayout
                 android:id="@+id/historySection"
                 android:layout_width="match_parent"
@@ -389,7 +383,6 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Log heading -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -416,7 +409,6 @@
 
                 </LinearLayout>
 
-                <!-- Visible when there are no records -->
                 <TextView
                     android:id="@+id/textEmptyLog"
                     android:layout_width="match_parent"
@@ -426,7 +418,6 @@
                     android:textColor="#707883"
                     android:textSize="13sp" />
 
-                <!-- Intake rows are inserted here -->
                 <LinearLayout
                     android:id="@+id/logsContainer"
                     android:layout_width="match_parent"
@@ -438,11 +429,11 @@
 
             </LinearLayout>
 
+
         </LinearLayout>
 
     </ScrollView>
 
-    <!-- Bottom navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         style="@style/HydrationBottomNavigation"
@@ -454,9 +445,9 @@
         android:fitsSystemWindows="true"
         app:itemIconTint="@color/bottom_navigation_color"
         app:itemTextColor="@color/bottom_navigation_color"
-        app:menu="@menu/bottom_navigation_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
